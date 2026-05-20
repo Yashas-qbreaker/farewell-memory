@@ -1,7 +1,41 @@
 body{
+  margin:0;
+  padding:0;
   background:black;
   color:white;
   font-family:sans-serif;
   text-align:center;
-  padding-top:50px;
+}
+
+.container{
+  padding:20px;
+  min-height:100vh;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+h1{
+  font-size:2rem;
+  margin-bottom:10px;
+}
+
+p{
+  opacity:0.8;
+  margin-bottom:20px;
+}
+
+.video-container{
+  width:100%;
+  max-width:400px;
+}
+
+video{
+  width:100%;
+  height:auto;
+
+  border-radius:20px;
+  box-shadow:0 0 25px rgba(255,255,255,0.15);
 }
