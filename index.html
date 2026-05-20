@@ -67,10 +67,10 @@
   <a-entity mindar-image-target="targetIndex: 0">
 
     <a-video
-      src="#memoryVideo"
-      width="1"
-      height="0.65"
-      position="0 0 0"
+    src="#memoryVideo"
+    width="0.7"
+    height="1"
+    position="0 0 0"
     ></a-video>
 
   </a-entity>
@@ -81,15 +81,16 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   const video = document.querySelector("#memoryVideo");
-  const scene = document.querySelector("a-scene");
 
-  scene.addEventListener("targetFound", () => {
+  const target = document.querySelector('[mindar-image-target]');
+
+  target.addEventListener("targetFound", () => {
     document.getElementById("loading").style.display = "none";
 
     video.play();
   });
 
-  scene.addEventListener("targetLost", () => {
+  target.addEventListener("targetLost", () => {
     video.pause();
   });
 
