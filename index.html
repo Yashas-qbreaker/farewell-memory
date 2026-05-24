@@ -72,8 +72,6 @@
 
       loop
 
-      muted
-
       playsinline
 
       webkit-playsinline
@@ -134,6 +132,11 @@ document.addEventListener("DOMContentLoaded", () => {
     reliveButton.style.display = "block";
 
     try {
+
+      video.muted = false;
+
+      video.volume = 1;
+      
       await video.play();
     }
     catch(err) {
