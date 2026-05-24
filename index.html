@@ -38,6 +38,10 @@
   Relive More ✨
 </a>
 
+<div id="tapHint">
+  👆 Tap Here
+</div>
+
 <a-scene
   mindar-image="
     imageTargetSrc: ./assets/targets.mind;
@@ -124,12 +128,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const reliveButton =
     document.getElementById("reliveButton");
 
+  const tapHint =
+  document.getElementById("tapHint");
+
   // FOUND
   target.addEventListener("targetFound", async () => {
 
     loading.style.display = "none";
 
     reliveButton.style.display = "block";
+
+    tapHint.style.display = "block";
 
     try {
 
@@ -149,6 +158,8 @@ document.addEventListener("DOMContentLoaded", () => {
   target.addEventListener("targetLost", () => {
 
     reliveButton.style.display = "none";
+
+    tapHint.style.display = "none";
 
     video.pause();
 
