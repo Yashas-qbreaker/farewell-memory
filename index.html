@@ -100,9 +100,13 @@
   Point camera at the memory photo 📸
 </div>
 
-<div id="foundMessage">
-  Memory Found ✨
-</div>
+<a
+  id="reliveButton"
+  href="https://drive.google.com/example-link"
+  target="_blank"
+>
+  Relive More ✨
+</a>
 
 <a-scene
   mindar-image="
@@ -189,15 +193,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const loading =
     document.getElementById("loading");
 
-  const foundMessage =
-    document.getElementById("foundMessage");
+  const reliveButton =
+    document.getElementById("reliveButton");
 
   // FOUND
   target.addEventListener("targetFound", async () => {
 
     loading.style.display = "none";
 
-    foundMessage.style.display = "block";
+    reliveButton.style.display = "block";
 
     try {
       await video.play();
@@ -211,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // LOST
   target.addEventListener("targetLost", () => {
 
-    foundMessage.style.display = "none";
+    reliveButton.style.display = "none";
 
     video.pause();
 
