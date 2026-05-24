@@ -72,15 +72,13 @@
 
       preload="auto"
 
-      autoplay
-
-      loop
-
       playsinline
 
       webkit-playsinline
 
       crossorigin="anonymous"
+
+      loop
     ></video>
 
   </a-assets>
@@ -129,9 +127,11 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("reliveButton");
 
   const tapHint =
-  document.getElementById("tapHint");
+    document.getElementById("tapHint");
 
-  // FOUND
+  let hasStarted = false;
+
+  // TARGET FOUND
   target.addEventListener("targetFound", async () => {
 
     loading.style.display = "none";
@@ -140,21 +140,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
     tapHint.style.display = "block";
 
+    if(hasStarted) return;
+
     try {
 
-      video.muted = false;
-
-      video.volume = 1;
-      
+      // wait for enough video data
       await video.play();
+
+      video.pause();
+
+      video.currentTime = 0;
+
+      // small delay helps older phones
+      setTimeout(async () => {
+
+        video.muted = false;
+
+        video.volume = 1;
+
+        await video.play();
+
+        hasStarted = true;
+
+      }, 300);
+
     }
+
     catch(err) {
+
       console.log(err);
+
     }
 
   });
 
-  // LOST
+  // TARGET LOST
   target.addEventListener("targetLost", () => {
 
     reliveButton.style.display = "none";
@@ -163,10 +183,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     video.pause();
 
+    hasStarted = false;
+
   });
 
 });
-
 </script>
 
 </body>
