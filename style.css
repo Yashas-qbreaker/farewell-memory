@@ -67,7 +67,7 @@ canvas {
 
   transform: translateX(-50%);
 
-  background: rgba(0,0,0,0.7);
+  background: rgba(255,255,255,0.12);
 
   color: white;
 
@@ -78,19 +78,21 @@ canvas {
   text-decoration: none;
 
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
 
   z-index: 999;
 
   display: none;
 
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
 
-  box-shadow: 0 0 20px rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.15);
 
   transition: 0.3s ease;
 }
 
 #reliveButton:hover{
-  transform: translateX(-50%) scale(1.05);
+  transform: translateX(-50%) scale(1.04);
+
+  background: rgba(255,255,255,0.18);
 }
