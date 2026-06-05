@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="
+      width=device-width,
+      initial-scale=1.0,
+      maximum-scale=1.0,
+      user-scalable=no
+    "
+  />
+
+  <title>Farewell Memory AR</title>
+
+  <link rel="stylesheet" href="style.css">
+  <!-- AFRAME -->
+  <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
+
+  <!-- MINDAR -->
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  
+</head>
+
+<body>
+
+<div id="loading">
+  Point camera at the memory photo 📸
+</div>
+
+<a
+  id="reliveButton"
+  href="./player.html"
+  target="_blank"
+>
+  View on Mobile ✨
+</a>
+
+<div id="tapHint">
+  👇 Tap Here
+</div>
+
+<a-scene
+  mindar-image="
+    imageTargetSrc: ./assets/targets.mind;
+    autoStart: true;
+    uiScanning: true;
+    uiLoading: true;
+  "
+
+  renderer="
+    colorManagement: true;
+    physicallyCorrectLights: true;
+    alpha: true;
+    antialias: true
+  "
+
+  color-space="sRGB"
+
+  vr-mode-ui="enabled: false"
+
+  device-orientation-permission-ui="enabled: false"
+>
+
+  <a-assets>
+
+    <video
+      id="memoryVideo"
+      src="./assets/memory.mp4"
+
+      preload="auto"
+
+      playsinline
+
+      webkit-playsinline
+
+      crossorigin="anonymous"
+
+      loop
+    ></video>
+
+  </a-assets>
+
+  <a-camera
+    position="0 0 0"
+    look-controls="enabled: false"
+  ></a-camera>
+
+  <!-- TARGET -->
+
+  <a-entity mindar-image-target="targetIndex: 0">
+
+    <a-video
+      id="videoPlane"
+
+      src="#memoryVideo"
+
+      width="1"
+
+      height="1.05"
+
+      position="0 0 0"
+
+      material="shader: flat;"
+    ></a-video>
+
+  </a-entity>
+
+</a-scene>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const video =
+    document.querySelector("#memoryVideo");
+
+  const target =
+    document.querySelector('[mindar-image-target]');
+
+  const loading =
+    document.getElementById("loading");
+
+  const reliveButton =
+    document.getElementById("reliveButton");
+
+  const tapHint =
+    document.getElementById("tapHint");
+
+  let hasStarted = false;
+
+  const arControls =
+    document.getElementById("arControls");
+
+  const playPause =
+    document.getElementById("playPause");
+
+  const back10 =
+    document.getElementById("back10");
+
+  const forward10 =
+    document.getElementById("forward10");
+
+
+  // TARGET FOUND
+  target.addEventListener("targetFound", async () => {
+
+    arControls.style.display="flex";
+
+    loading.style.display = "none";
+
+    reliveButton.style.display = "block";
+
+    tapHint.style.display = "block";
+
+    if(hasStarted) return;
+
+    try {
+
+      // wait for enough video data
+      await video.play();
+
+      video.pause();
+
+      video.currentTime = 0;
+
+      // small delay helps older phones
+      setTimeout(async () => {
+
+        video.muted = false;
+
+        video.volume = 1;
+
+        await video.play();
+
+        hasStarted = true;
+
+      }, 300);
+
+    }
+
+    catch(err) {
+
+      console.log(err);
+
+    }
+
+  });
+
+  // TARGET LOST
+  target.addEventListener("targetLost", () => {
+
+    arControls.style.display="none";
+
+    reliveButton.style.display = "none";
+
+    tapHint.style.display = "none";
+
+    video.pause();
+
+    hasStarted = false;
+
+  });
+
+  video.addEventListener("ended", () => {
+
+  window.location.href = "./player.html";
+
+});
+
+playPause.onclick = async () => {
+
+  if(video.paused){
+
+    await video.play();
+
+    playPause.innerHTML="⏸️";
+
+  }else{
+
+    video.pause();
+
+    playPause.innerHTML="▶️";
+
+  }
+
+};
+
+back10.onclick = () => {
+
+  video.currentTime =
+    Math.max(0, video.currentTime - 10);
+
+};
+
+forward10.onclick = () => {
+
+  video.currentTime =
+    Math.min(
+      video.duration,
+      video.currentTime + 10
+    );
+
+};
+
+});
+</script>
+
+<div id="arControls">
+
+  <button id="back10">⏪</button>
+
+  <button id="playPause">▶️</button>
+
+  <button id="forward10">⏩</button>
+
+</div>
+
+</body>
+</html>
