@@ -143,48 +143,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const forward10 =
     document.getElementById("forward10");
 
+  video.muted = true;
+  video.volume = 1;
 
   // TARGET FOUND
   target.addEventListener("targetFound", async () => {
 
-    arControls.style.display="flex";
-
     loading.style.display = "none";
-
     reliveButton.style.display = "block";
-
-    tapHint.style.display = "block";
+    arControls.style.display = "flex";
 
     if(hasStarted) return;
 
     try {
-
-      // wait for enough video data
       await video.play();
-
-      video.pause();
-
-      video.currentTime = 0;
-
-      // small delay helps older phones
-      setTimeout(async () => {
-
-        video.muted = false;
-
-        video.volume = 1;
-
-        await video.play();
-
-        hasStarted = true;
-
-      }, 300);
-
+      hasStarted = true;
+      tapHint.style.display = "none";
+      playPause.innerHTML = "⏸️";
     }
-
     catch(err) {
-
+      tapHint.textContent = "Tap play to start the video";
+      tapHint.style.display = "block";
       console.log(err);
-
     }
 
   });
@@ -205,45 +185,39 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   video.addEventListener("ended", () => {
+    window.location.href = "./player.html";
+  });
 
-  window.location.href = "./player.html";
+  playPause.onclick = async () => {
 
-});
+    if(video.paused){
+      video.muted = false;
+      await video.play();
+      playPause.innerHTML = "⏸️";
+      tapHint.style.display = "none";
+    } else {
+      video.pause();
+      playPause.innerHTML = "▶️";
+    }
 
-playPause.onclick = async () => {
+  };
 
-  if(video.paused){
+  back10.onclick = () => {
 
-    await video.play();
+    video.currentTime =
+      Math.max(0, video.currentTime - 10);
 
-    playPause.innerHTML="⏸️";
+  };
 
-  }else{
+  forward10.onclick = () => {
 
-    video.pause();
+    video.currentTime =
+      Math.min(
+        video.duration,
+        video.currentTime + 10
+      );
 
-    playPause.innerHTML="▶️";
-
-  }
-
-};
-
-back10.onclick = () => {
-
-  video.currentTime =
-    Math.max(0, video.currentTime - 10);
-
-};
-
-forward10.onclick = () => {
-
-  video.currentTime =
-    Math.min(
-      video.duration,
-      video.currentTime + 10
-    );
-
-};
+  };
 
 });
 </script>
