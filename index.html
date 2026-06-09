@@ -32,10 +32,10 @@
 
 <a
   id="reliveButton"
-  href="./player.html"
+  href="./Commingsoon.html"
   target="_blank"
 >
-  View on Mobile ✨
+  Relive More ✨
 </a>
 
 <div id="tapHint">
@@ -131,23 +131,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let hasStarted = false;
 
-  const arControls =
-    document.getElementById("arControls");
-
-  const playPause =
-    document.getElementById("playPause");
-
-  const back10 =
-    document.getElementById("back10");
-
-  const forward10 =
-    document.getElementById("forward10");
-
-
   // TARGET FOUND
   target.addEventListener("targetFound", async () => {
-
-    arControls.style.display="flex";
 
     loading.style.display = "none";
 
@@ -192,8 +177,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // TARGET LOST
   target.addEventListener("targetLost", () => {
 
-    arControls.style.display="none";
-
     reliveButton.style.display = "none";
 
     tapHint.style.display = "none";
@@ -204,59 +187,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   });
 
-  video.addEventListener("ended", () => {
-
-  window.location.href = "./player.html";
-
-});
-
-playPause.onclick = async () => {
-
-  if(video.paused){
-
-    await video.play();
-
-    playPause.innerHTML="⏸️";
-
-  }else{
-
-    video.pause();
-
-    playPause.innerHTML="▶️";
-
-  }
-
-};
-
-back10.onclick = () => {
-
-  video.currentTime =
-    Math.max(0, video.currentTime - 10);
-
-};
-
-forward10.onclick = () => {
-
-  video.currentTime =
-    Math.min(
-      video.duration,
-      video.currentTime + 10
-    );
-
-};
-
 });
 </script>
-
-<div id="arControls">
-
-  <button id="back10">⏪</button>
-
-  <button id="playPause">▶️</button>
-
-  <button id="forward10">⏩</button>
-
-</div>
 
 </body>
 </html>
