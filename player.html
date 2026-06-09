@@ -153,6 +153,8 @@ body{
 
     <video
       id="video"
+      autoplay
+      muted
       preload="metadata"
     >
       <source src="./assets/memory1.mp4" type="video/mp4">
@@ -253,10 +255,14 @@ playBtn.onclick = async () => {
 
 video.addEventListener(
   "loadedmetadata",
-  () => {
+  async () => {
 
     duration.textContent =
       format(video.duration);
+
+    setTimeout(() => {
+      video.muted = false;
+    }, 300);
 
   }
 );

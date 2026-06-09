@@ -69,15 +69,12 @@
     <video
       id="memoryVideo"
       src="./assets/memory.mp4"
-
+      autoplay
+      muted
       preload="auto"
-
       playsinline
-
       webkit-playsinline
-
       crossorigin="anonymous"
-
       loop
     ></video>
 
@@ -143,28 +140,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const forward10 =
     document.getElementById("forward10");
 
-  video.muted = true;
-  video.volume = 1;
-
   // TARGET FOUND
   target.addEventListener("targetFound", async () => {
 
     loading.style.display = "none";
     reliveButton.style.display = "block";
     arControls.style.display = "flex";
+    tapHint.style.display = "block";
 
-    if(hasStarted) return;
-
-    try {
-      await video.play();
+    if(!hasStarted) {
       hasStarted = true;
-      tapHint.style.display = "none";
       playPause.innerHTML = "⏸️";
-    }
-    catch(err) {
-      tapHint.textContent = "Tap play to start the video";
-      tapHint.style.display = "block";
-      console.log(err);
     }
 
   });
@@ -177,10 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
     reliveButton.style.display = "none";
 
     tapHint.style.display = "none";
-
-    video.pause();
-
-    hasStarted = false;
 
   });
 
