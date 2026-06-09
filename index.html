@@ -27,8 +27,20 @@
 <body>
 
 <div id="loading">
-  Point camera at the memory photo 📸
+  📸 Loading AR camera...
 </div>
+
+<div id="buffering" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); color:white; font-size:18px; z-index:10000; text-align:center;">
+  <div style="animation: spin 1s linear infinite; font-size:32px;">⟳</div>
+  <div style="margin-top:12px;">Buffering memory...</div>
+</div>
+
+<style>
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+</style>
 
 <a
   id="reliveButton"
@@ -64,7 +76,7 @@
   device-orientation-permission-ui="enabled: false"
 >
 
-  <a-assets>
+  <a-assets preload="auto">
 
     <video
       id="memoryVideo"
@@ -120,6 +132,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const loading =
     document.getElementById("loading");
 
+  const buffering =
+    document.getElementById("buffering");
+
   const reliveButton =
     document.getElementById("reliveButton");
 
@@ -139,6 +154,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const forward10 =
     document.getElementById("forward10");
+
+  // Show buffering when video starts loading
+  video.addEventListener("loadstart", () => {
+    buffering.style.display = "block";
+  });
+
+  // Hide buffering when video has enough data
+  video.addEventListener("canplay", () => {
+    buffering.style.display = "none";
+  });
+
+  // Show buffering if video needs to buffer
+  video.addEventListener("waiting", () => {
+    buffering.style.display = "block";
+  });
 
   // TARGET FOUND
   target.addEventListener("targetFound", async () => {
@@ -177,6 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
       await video.play();
       playPause.innerHTML = "⏸️";
       tapHint.style.display = "none";
+      buffering.style.display = "none";
     } else {
       video.pause();
       playPause.innerHTML = "▶️";

@@ -141,11 +141,42 @@ body{
   border-radius:14px;
 }
 
+#buffering{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 18px;
+  z-index: 10000;
+  text-align: center;
+  display: none;
+}
+
+#buffering div:first-child{
+  animation: spin 1s linear infinite;
+  font-size: 32px;
+}
+
+#buffering div:last-child{
+  margin-top: 12px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 </style>
 
 </head>
 
 <body>
+
+<div id="buffering">
+  <div>⟳</div>
+  <div>Buffering memory...</div>
+</div>
 
 <div class="polaroid">
 
@@ -203,6 +234,9 @@ body{
 const video =
   document.getElementById("video");
 
+const buffering =
+  document.getElementById("buffering");
+
 const playBtn =
   document.getElementById("play");
 
@@ -214,6 +248,26 @@ const current =
 
 const duration =
   document.getElementById("duration");
+
+// Show buffering when video starts loading
+video.addEventListener("loadstart", () => {
+  buffering.style.display = "block";
+});
+
+// Hide buffering when video has enough data
+video.addEventListener("canplay", () => {
+  buffering.style.display = "none";
+});
+
+// Show buffering if video needs to buffer
+video.addEventListener("waiting", () => {
+  buffering.style.display = "block";
+});
+
+// Hide buffering on play
+video.addEventListener("playing", () => {
+  buffering.style.display = "none";
+});
 
 document
 .getElementById("back")
