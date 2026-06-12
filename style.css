@@ -111,8 +111,8 @@ canvas {
 
   color: white;
 
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 500;
 
   z-index: 999;
 
@@ -120,17 +120,230 @@ canvas {
 
   animation: bounceTap 1.2s infinite;
 
-  padding: 10px 16px;
-  border-radius: 24px;
-  background: rgba(0,0,0,0.35);
   text-shadow: 0 0 10px rgba(255,255,255,0.4);
+}
+
+#arVideoControls {
+  position: fixed;
+  bottom: 92px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(92vw, 430px);
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  padding: 9px 10px;
+  box-sizing: border-box;
+  z-index: 1000;
+  color: white;
+  background: rgba(8, 18, 32, 0.52);
+  border: 1px solid rgba(30,144,255,0.34);
+  border-radius: 18px;
+  box-shadow: 0 14px 34px rgba(0,0,0,0.26), 0 0 18px rgba(30,144,255,0.14);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  pointer-events: auto;
+  touch-action: auto;
+}
+
+.ar-control-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 34px;
+}
+
+.ar-control-btn {
+  width: 36px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 999px;
+  color: white;
+  background: rgba(30,144,255,0.18);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+  touch-action: manipulation;
+}
+
+.ar-control-btn:hover {
+  background: rgba(30,144,255,0.28);
+  border-color: rgba(255,255,255,0.36);
+}
+
+.ar-control-btn:active,
+.ar-control-btn.is-tapping {
+  transform: scale(0.92);
+}
+
+.ar-play-btn {
+  width: 42px;
+  height: 36px;
+  background: rgba(30,144,255,0.74);
+  box-shadow: 0 6px 16px rgba(30,144,255,0.22);
+}
+
+#muteToggle {
+  width: 42px;
+  font-size: 16px;
+}
+
+#bufferSpinner {
+  width: 18px;
+  height: 18px;
+  display: none;
+  flex: 0 0 auto;
+  border: 2px solid rgba(255,255,255,0.28);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spinBuffer 0.8s linear infinite;
+}
+
+.ar-progress-row {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) 38px;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255,255,255,0.86);
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+#videoProgress {
+  width: 100%;
+  height: 18px;
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  touch-action: none;
+}
+
+#videoProgress::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgb(30,144,255) var(--progress, 0%),
+    rgba(255,255,255,0.24) var(--progress, 0%)
+  );
+}
+
+#videoProgress::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.24);
+}
+
+#videoProgress::-moz-range-progress {
+  height: 4px;
+  border-radius: 999px;
+  background: rgb(30,144,255);
+}
+
+#videoProgress::-webkit-slider-thumb {
+  width: 14px;
+  height: 14px;
+  margin-top: -5px;
+  border: 2px solid white;
+  border-radius: 50%;
+  background: rgb(30,144,255);
+  box-shadow: 0 4px 10px rgba(30,144,255,0.32);
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+#videoProgress::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border: 2px solid white;
+  border-radius: 50%;
+  background: rgb(30,144,255);
+  box-shadow: 0 4px 10px rgba(30,144,255,0.32);
+}
+
+#arPlayOverlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 74px;
+  height: 74px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  z-index: 1001;
+  border: 1px solid rgba(255,255,255,0.42);
+  border-radius: 50%;
+  background: rgba(30,144,255,0.68);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.28), 0 0 24px rgba(30,144,255,0.22);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+#arPlayOverlay span {
+  width: 0;
+  height: 0;
+  margin-left: 5px;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 23px solid white;
+}
+
+#arPlayOverlay:active {
+  transform: translate(-50%, -50%) scale(0.94);
+}
+
+@keyframes spinBuffer {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 420px) {
+  #arVideoControls {
+    bottom: 88px;
+    width: min(94vw, 390px);
+    padding: 8px 9px;
+    border-radius: 16px;
+  }
+
+  .ar-control-top {
+    gap: 7px;
+  }
+
+  .ar-control-btn {
+    width: 34px;
+    height: 31px;
+  }
+
+  .ar-play-btn {
+    width: 40px;
+    height: 35px;
+  }
+
+  #muteToggle {
+    width: 39px;
+  }
 }
 
 @keyframes bounceTap{
 
   0%{
     transform: translateX(-50%) translateY(0px);
-    opacity: 0.8;
+    opacity: 0.7;
   }
 
   50%{
@@ -140,66 +353,7 @@ canvas {
 
   100%{
     transform: translateX(-50%) translateY(0px);
-    opacity: 0.8;
+    opacity: 0.7;
   }
 
-}
-
-#arControls{
-
-  position:fixed;
-
-  bottom:90px;
-
-  left:50%;
-
-  transform:translateX(-50%);
-
-  display:none;
-
-  z-index:9999;
-
-  gap:10px;
-  padding: 10px 16px;
-  background: rgba(0,0,0,0.35);
-  border-radius: 28px;
-  box-shadow: 0 16px 34px rgba(0,0,0,0.35);
-}
-
-#arControls button{
-
-  border:none;
-
-  background:rgba(255,255,255,.18);
-
-  color:white;
-
-  padding:14px 18px;
-
-  border-radius:18px;
-
-  backdrop-filter:blur(10px);
-  font-size: 18px;
-  min-width: 60px;
-}
-
-#reliveMore{
-
-  display:block;
-
-  width: fit-content;
-
-  text-align:center;
-
-  margin:20px auto 0;
-
-  background:#1e88e5;
-
-  color:white;
-
-  text-decoration:none;
-
-  padding:12px;
-
-  border-radius:12px;
 }
