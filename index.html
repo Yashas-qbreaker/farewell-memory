@@ -5,7 +5,12 @@
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    content="
+      width=device-width,
+      initial-scale=1.0,
+      maximum-scale=1.0,
+      user-scalable=no
+    "
   />
 
   <title>Farewell Memory AR</title>
@@ -16,12 +21,13 @@
 
   <!-- MINDAR -->
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  
 </head>
 
 <body>
 
 <div id="loading">
-  Point camera at the memory photo &#128248;
+  Point camera at the memory photo 📸
 </div>
 
 <a
@@ -29,11 +35,11 @@
   href="./Commingsoon.html"
   target="_blank"
 >
-  Relive More &#10024;
+  Relive More ✨
 </a>
 
 <div id="tapHint">
-  &#128071; Tap Here
+  👇 Tap Here
 </div>
 
 <a-scene
@@ -112,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#memoryVideo");
 
   const target =
-    document.querySelector("[mindar-image-target]");
+    document.querySelector('[mindar-image-target]');
 
   const loading =
     document.getElementById("loading");
@@ -138,14 +144,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
 
-      // Wait for enough video data before A-Frame uses it as a texture.
+      // wait for enough video data
       await video.play();
 
       video.pause();
 
       video.currentTime = 0;
 
-      // Small delay helps older phones.
+      // small delay helps older phones
       setTimeout(async () => {
 
         video.muted = false;
