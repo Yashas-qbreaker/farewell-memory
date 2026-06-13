@@ -161,10 +161,8 @@
 
   <a-entity mindar-image-target="targetIndex: 0">
 
-    <a-video
+    <a-plane
       id="videoPlane"
-
-      src="#memoryVideo"
 
       width="1"
 
@@ -172,8 +170,14 @@
 
       position="0 0 0"
 
-      material="shader: flat;"
-    ></a-video>
+      visible="false"
+
+      material="
+        shader: flat;
+        src: #memoryVideo;
+        side: double;
+      "
+    ></a-plane>
 
   </a-entity>
 
@@ -185,6 +189,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const video =
     document.querySelector("#memoryVideo");
+
+  const videoPlane =
+    document.querySelector("#videoPlane");
 
   const target =
     document.querySelector('[mindar-image-target]');
@@ -414,6 +421,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if(!isTargetVisible) return;
 
+      videoPlane.setAttribute("visible", "true");
+
       await video.play();
 
       hasStarted = true;
@@ -608,6 +617,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     showBuffering(true);
 
+    videoPlane.setAttribute("visible", "false");
+
     if(!hasStarted) {
 
       video.pause();
@@ -635,6 +646,8 @@ document.addEventListener("DOMContentLoaded", () => {
     controls.style.display = "none";
 
     playOverlay.style.display = "none";
+
+    videoPlane.setAttribute("visible", "false");
 
     showBuffering(false);
 
