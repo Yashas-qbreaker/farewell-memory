@@ -104,7 +104,7 @@ canvas {
 #tapHint{
   position: fixed;
 
-  bottom: 90px;
+  bottom: 170px;
   left: 50%;
 
   transform: translateX(-50%);
@@ -121,6 +121,55 @@ canvas {
   animation: bounceTap 1.2s infinite;
 
   text-shadow: 0 0 10px rgba(255,255,255,0.4);
+}
+
+#videoControls{
+  position: fixed;
+
+  right: 14px;
+  left: 14px;
+  bottom: 102px;
+
+  display: none;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px;
+
+  z-index: 1000;
+
+  background: rgba(0,0,0,0.48);
+
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 12px;
+
+  box-sizing: border-box;
+
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
+#videoControls button{
+  width: 72px;
+  height: 38px;
+
+  border: 0;
+  border-radius: 8px;
+
+  background: rgba(255,255,255,0.92);
+  color: black;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  flex: 0 0 auto;
+}
+
+#videoSeek{
+  min-width: 0;
+  flex: 1 1 auto;
+
+  accent-color: dodgerblue;
 }
 
 @keyframes bounceTap{

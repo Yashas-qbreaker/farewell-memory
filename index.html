@@ -21,7 +21,7 @@
 
   <!-- MINDAR -->
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-  
+
 </head>
 
 <body>
@@ -40,6 +40,26 @@
 
 <div id="tapHint">
   👇 Tap Here
+</div>
+
+<div id="videoControls" aria-label="Video controls">
+  <button id="playPauseButton" type="button" aria-label="Pause video">
+    Pause
+  </button>
+
+  <input
+    id="videoSeek"
+    type="range"
+    min="0"
+    max="100"
+    value="0"
+    step="0.1"
+    aria-label="Video progress"
+  />
+
+  <button id="muteButton" type="button" aria-label="Mute video">
+    Mute
+  </button>
 </div>
 
 <a-scene
@@ -68,7 +88,7 @@
 
     <video
       id="memoryVideo"
-      src="./assets/memory.mp4"
+      src="./assets/memory1.mp4"
 
       preload="auto"
 
@@ -129,7 +149,75 @@ document.addEventListener("DOMContentLoaded", () => {
   const tapHint =
     document.getElementById("tapHint");
 
+  const videoControls =
+    document.getElementById("videoControls");
+
+  const playPauseButton =
+    document.getElementById("playPauseButton");
+
+  const muteButton =
+    document.getElementById("muteButton");
+
+  const videoSeek =
+    document.getElementById("videoSeek");
+
   let hasStarted = false;
+  let isSeeking = false;
+
+  const syncPlayButton = () => {
+    playPauseButton.textContent = video.paused ? "Play" : "Pause";
+    playPauseButton.setAttribute(
+      "aria-label",
+      video.paused ? "Play video" : "Pause video"
+    );
+  };
+
+  const syncMuteButton = () => {
+    muteButton.textContent = video.muted ? "Unmute" : "Mute";
+    muteButton.setAttribute(
+      "aria-label",
+      video.muted ? "Unmute video" : "Mute video"
+    );
+  };
+
+  const syncSeek = () => {
+    if(isSeeking || !video.duration) return;
+
+    videoSeek.value =
+      (video.currentTime / video.duration) * 100;
+  };
+
+  video.addEventListener("play", syncPlayButton);
+  video.addEventListener("pause", syncPlayButton);
+  video.addEventListener("volumechange", syncMuteButton);
+  video.addEventListener("timeupdate", syncSeek);
+  video.addEventListener("loadedmetadata", syncSeek);
+
+  playPauseButton.addEventListener("click", async () => {
+    if(video.paused) {
+      await video.play();
+    }
+    else {
+      video.pause();
+    }
+  });
+
+  muteButton.addEventListener("click", () => {
+    video.muted = !video.muted;
+  });
+
+  videoSeek.addEventListener("input", () => {
+    isSeeking = true;
+  });
+
+  videoSeek.addEventListener("change", () => {
+    if(video.duration) {
+      video.currentTime =
+        (Number(videoSeek.value) / 100) * video.duration;
+    }
+
+    isSeeking = false;
+  });
 
   // TARGET FOUND
   target.addEventListener("targetFound", async () => {
@@ -139,6 +227,8 @@ document.addEventListener("DOMContentLoaded", () => {
     reliveButton.style.display = "block";
 
     tapHint.style.display = "block";
+
+    videoControls.style.display = "flex";
 
     if(hasStarted) return;
 
@@ -180,6 +270,8 @@ document.addEventListener("DOMContentLoaded", () => {
     reliveButton.style.display = "none";
 
     tapHint.style.display = "none";
+
+    videoControls.style.display = "none";
 
     video.pause();
 
